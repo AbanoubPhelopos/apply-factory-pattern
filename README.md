@@ -276,15 +276,15 @@ graph TB
     subgraph "Before"
         H[High-level: NotificationService]
         L[Low-level: SmtpClient, TwilioClient, SlackApiClient]
-        H --> L
+        H -.->|depends on| L
     end
 
     subgraph "After"
         HA[High-level: NotificationService]
         A[Abstraction: INotificationSender]
         L2[Low-level: EmailSender, SmsSender, ...]
-        HA --> A
-        A ..|> L2
+        HA -.->|depends on| A
+        L2 <|.. A
     end
 ```
 
