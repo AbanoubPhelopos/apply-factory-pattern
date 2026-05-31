@@ -169,13 +169,13 @@ graph TB
 ```mermaid
 graph LR
     subgraph "Before"
-        B1["if (channel == \"Email\")"]
-        B2["using var smtp = new SmtpClient(...)"]
-        B3["TwilioClient.Init(...) on every call"]
+        B1["if channel == Email"]
+        B2["new SmtpClient(...)"]
+        B3["TwilioClient.Init() on every call"]
     end
 
     subgraph "After"
-        A1["var sender = factory.CreateSender(channel)"]
+        A1["factory.CreateSender(channel)"]
         A2["sender.SendAsync(message)"]
         A3["Init() called once in constructor"]
     end
@@ -276,15 +276,15 @@ graph TB
     subgraph "Before"
         H[High-level: NotificationService]
         L[Low-level: SmtpClient, TwilioClient, SlackApiClient]
-        H -->|depends on| L
+        H --> L
     end
 
     subgraph "After"
         HA[High-level: NotificationService]
         A[Abstraction: INotificationSender]
         L2[Low-level: EmailSender, SmsSender, ...]
-        HA -->|depends on| A
-        A<|-- L2
+        HA --> A
+        A ..|> L2
     end
 ```
 
